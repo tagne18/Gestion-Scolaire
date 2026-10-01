@@ -1,0 +1,96 @@
+{
+  "name": "gestion-scolarite",
+  "version": "1.0.0",
+  "description": "Application de gestion des paiements de scolarité pour établissement scolaire",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite --config frontend/vite.config.js",
+    "build": "vite build --config frontend/vite.config.js",
+    "kill-port": "node -e \"try{require('child_process').execSync('netstat -ano|findstr :5173').toString().split(/\\r?\\n/).filter(l=>l.trim()).forEach(l=>{const p=l.trim().split(/\\s+/).pop();if(p&&/^\\d+$/.test(p)){console.log('Killing PID',p);require('child_process').execSync('taskkill /F /PID '+p,{stdio:'ignore'})}});console.log('Port 5173 nettoye');}catch(e){console.log('Port 5173 libre ou erreur:',e.message);}\"",
+    "electron": "electron main.js --no-sandbox --disable-breakpad --disable-seccomp-filter-sandbox --disable-backing-store-limit --disable-features=TranslateUI --disable-gpu-compositing",
+    "electron:diagnose": "node electron-diagnose.js",
+    "electron:dev": "npm run kill-port && npx concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron main.js\"",
+    "electron:dev:separate": "echo Demarre Vite d'abord, puis Electron dans un 2nd terminal && npm run dev",
+    "electron:only": "npm run kill-port && electron main.js --disable-backing-store-limit --disable-features=TranslateUI --disable-gpu-compositing --enable-logging --log-level=0 --v=1",
+    "electron:minimal": "electron electron-minimal.js",
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:win": "npm run build && electron-builder --win"
+  },
+  "keywords": [
+    "electron",
+    "scolarite",
+    "paiements",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron/rebuild": "^3.7.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "electron": "^44.4.1",
+    "electron-builder": "^24.9.1",
+    "vite": "^5.0.8",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "html2pdf.js": "^0.14.0",
+    "pdfmake": "^0.2.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "build": {
+    "appId": "com.gestion.scolarite",
+    "productName": "Gestion Scolarité",
+    "directories": {
+      "output": "dist_electron",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "backend/**/*",
+      "frontend/dist/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeader": "build/header.bmp",
+      "installerSidebar": "build/sidebar.bmp",
+      "perMachine": false,
+      "allowElevation": true,
+      "runAfterFinish": true
+    },
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**/*",
+      "**/node_modules/@electron/rebuild/**/*"
+    ],
+    "npmRebuild": false
+  }
+}

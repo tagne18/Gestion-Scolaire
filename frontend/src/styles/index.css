@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Styles d'impression */
+@media print {
+  @page {
+    size: portrait;
+    margin: 1cm;
+  }
+
+  body {
+    background: white;
+  }
+
+  /* Masquer la barre de navigation */
+  nav,
+  .sidebar,
+  [role="navigation"],
+  .navigation {
+    display: none !important;
+  }
+
+  /* Masquer les boutons d'action */
+  button,
+  .btn,
+  input[type="button"],
+  input[type="submit"] {
+    display: none !important;
+  }
+
+  /* Améliorer l'apparence des tableaux pour l'impression */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* Assurer que le contenu principal prend toute la largeur */
+  main,
+  .main-content,
+  #root {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Masquer les éléments inutiles pour l'impression */
+  .no-print,
+  .actions,
+  .pagination {
+    display: none !important;
+  }
+}

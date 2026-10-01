@@ -1,0 +1,17 @@
+appId: com.gestion.scolarite
+productName: Gestion Scolarité
+directories:
+  output: dist_electron
+files:
+  - main.js
+  - preload.js
+  - backend/**/*
+  - dist/**/*
+  - package.json
+  - node_modules/better-sqlite3/**/*
+win:
+  target: nsis
+  # icon: assets/icon.ico  # À décommenter si vous avez une icône
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
